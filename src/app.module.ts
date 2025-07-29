@@ -17,7 +17,7 @@ import { AuthModule } from './auth/auth.module';
       inject: [ConfigService],
     }),
     UserModule,
-    AuthModule, // ← this should end with a comma or nothing, not a semicolon
+    AuthModule,
   ],
   controllers: [AppController],
   providers: [AppService],

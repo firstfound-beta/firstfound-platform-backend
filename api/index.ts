@@ -1,28 +1,24 @@
 // api/index.ts
 import 'reflect-metadata';
 import { NestFactory } from '@nestjs/core';
-import { AppModule } from '../src/app.module'; // ✅ Update path if needed
+import { AppModule } from '../src/app.module';
 import { ExpressAdapter } from '@nestjs/platform-express';
 import * as express from 'express';
-import { Handler } from '@vercel/node';
 import { Request, Response } from 'express';
 
 const expressApp = express();
-let nestAppReady = false;
+let isReady = false;
 
-// Initialize NestJS app only once
-const bootstrap = async () => {
-  if (!nestAppReady) {
-    const nestApp = await NestFactory.create(AppModule, new ExpressAdapter(expressApp));
-    await nestApp.init();
-    nestAppReady = true;
+async function bootstrap() {
+  if (!isReady) {
+    const app = await NestFactory.create(AppModule, new ExpressAdapter(expressApp));
+    await app.init();
+    isReady = true;
   }
-};
+}
 
-// Vercel handler
-const handler: Handler = async (req: Request, res: Response) => {
+export default async function handler(req: Request, res: Response): Promise<void> {
   await bootstrap();
-  expressApp(req, res); // ✅ THIS is allowed (after init)
-};
-
-export default handler;
+  // Cast to suppress TS error (Express app is callable, but types don't know it)
+  return (expressApp as unknown as (req: Request, res: Response) => void)(req, res);
+}

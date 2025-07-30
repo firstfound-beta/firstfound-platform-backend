@@ -1,16 +1,28 @@
 // api/index.ts
+import 'reflect-metadata';
 import { NestFactory } from '@nestjs/core';
-import { AppModule } from '../src/app.module';
+import { AppModule } from '../src/app.module'; // ✅ Update path if needed
 import { ExpressAdapter } from '@nestjs/platform-express';
 import * as express from 'express';
+import { Handler } from '@vercel/node';
+import { Request, Response } from 'express';
 
-const server = express();
+const expressApp = express();
+let nestAppReady = false;
 
+// Initialize NestJS app only once
 const bootstrap = async () => {
-  const app = await NestFactory.create(AppModule, new ExpressAdapter(server));
-  await app.init();
+  if (!nestAppReady) {
+    const nestApp = await NestFactory.create(AppModule, new ExpressAdapter(expressApp));
+    await nestApp.init();
+    nestAppReady = true;
+  }
 };
 
-bootstrap();
+// Vercel handler
+const handler: Handler = async (req: Request, res: Response) => {
+  await bootstrap();
+  expressApp(req, res); // ✅ THIS is allowed (after init)
+};
 
-export default server;
+export default handler;

@@ -4,9 +4,7 @@ import { NestFactory } from '@nestjs/core';
 import { AppModule } from '../src/app.module';
 import { ExpressAdapter } from '@nestjs/platform-express';
 import * as express from 'express';
-
 const server = express();
-
 let isInitialized = false;
 
 const bootstrap = async () => {

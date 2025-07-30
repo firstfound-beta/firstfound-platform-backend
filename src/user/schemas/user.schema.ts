@@ -30,6 +30,9 @@ export class User extends Document {
   })
   role: UserRole[];
 
+  @Prop({ default: false })
+  country: string;
+
   @Prop()
   fullName: string;
 }

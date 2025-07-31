@@ -7,7 +7,10 @@ async function bootstrap() {
 
   // ✅ Allow frontend origins (Vercel + local dev)
   app.enableCors({
-    origin: ['http://localhost:5173', 'https://firstfound-platform-frontend.vercel.app'],
+    origin: [
+      'http://localhost:5173',
+      'https://firstfound-platform-backend-evom.vercel.app',
+    ],
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
     credentials: true,
   });

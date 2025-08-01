@@ -6,14 +6,7 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
   // ✅ Allow frontend origins (Vercel + local dev)
-  app.enableCors({
-    origin: [
-      'http://localhost:5173',
-      'https://firstfound-platform-backend-evom.vercel.app',
-    ],
-    methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
-    credentials: true,
-  });
+  app.enableCors();
 
   // Swagger setup (optional)
   const config = new DocumentBuilder()

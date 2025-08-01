@@ -12,7 +12,7 @@ import { RegisterDto } from './dto/register.dto';
 import { LoginDto } from './dto/login.dto';
 import { UserRole } from '../user/schemas/user.schema';
 import to from 'await-to-js';
-
+import { Role, VALID_ROLES } from '../user/enums/role.enum';
 import { CreateUserDto } from '../user/dto/create-user.dto';
 @Injectable()
 export class AuthService {
@@ -63,7 +63,6 @@ export class AuthService {
     console.log('Incoming role value:', role);
     console.log('Type of role:', typeof role);
 
-    const VALID_ROLES = ['customer', 'admin'];
     if (!Array.isArray(role) || role.length === 0) {
       throw new ForbiddenException('Role must be a non-empty array');
     }

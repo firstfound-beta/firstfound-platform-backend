@@ -4,6 +4,8 @@ import {
   IsNumber,
   IsOptional,
   IsArray,
+  IsUrl,
+  Min,
 } from 'class-validator';
 
 export class CreateProductDto {
@@ -16,9 +18,11 @@ export class CreateProductDto {
   description: string;
 
   @IsNumber()
+  @Min(0)
   price: number;
 
   @IsNumber()
+  @Min(0)
   @IsOptional()
   fundingProgress?: number;
 
@@ -29,4 +33,25 @@ export class CreateProductDto {
   @IsArray()
   @IsOptional()
   categories?: string[];
+
+  @IsString()
+  @IsNotEmpty()
+  @IsUrl()
+  demoVideoUrl: string;
+
+  @IsNumber()
+  @Min(0)
+  rating: number;
+
+  @IsNumber()
+  @Min(0)
+  amountRaised: number;
+
+  @IsNumber()
+  @Min(0)
+  percentageFunded: number;
+
+  @IsNumber()
+  @Min(0)
+  backersCount: number;
 }

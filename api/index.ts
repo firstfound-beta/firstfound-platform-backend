@@ -6,7 +6,6 @@ import { ExpressAdapter } from '@nestjs/platform-express';
 import express from 'express'; // ✅ default import
 const expressApp = express();
 import { Request, Response } from 'express';
-
 let isReady = false;
 
 async function bootstrap() {

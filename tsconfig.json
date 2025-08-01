@@ -13,7 +13,7 @@
     "sourceMap": true,
     "outDir": "./dist",
     "baseUrl": "./",
-    "rootDir": "./",
+    "rootDir": "./src", // ✅ root is src
     "incremental": true,
     "skipLibCheck": true,
     "strictNullChecks": false,
@@ -22,5 +22,5 @@
     "forceConsistentCasingInFileNames": false,
     "noFallthroughCasesInSwitch": false
   },
-  "include": ["src", "api"]
+  "include": ["src"] // ✅ Only include src
 }

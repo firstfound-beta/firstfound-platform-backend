@@ -7,7 +7,6 @@ import express from 'express'; // ✅ default import
 const expressApp = express();
 import { Request, Response } from 'express';
 let isReady = false;
-
 async function bootstrap() {
   if (!isReady) {
     const app = await NestFactory.create(

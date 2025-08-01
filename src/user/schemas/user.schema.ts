@@ -1,12 +1,7 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document, UpdateQuery } from 'mongoose';
 import * as bcrypt from 'bcryptjs';
-
-export enum UserRole {
-  CUSTOMER = 'customer',
-  WHOLESALER = 'wholesaler',
-  ADMIN = 'admin',
-}
+import { Role } from '../enums/role.enum'; // Adjust path as needed
 
 @Schema({ timestamps: true }) // ✅ <-- Add this line
 export class User extends Document {
@@ -24,11 +19,11 @@ export class User extends Document {
 
   @Prop({
     type: [String],
-    enum: UserRole,
-    default: [UserRole.CUSTOMER],
+    enum: Role,
+    default: [Role.Customer],
     required: true,
   })
-  role: UserRole[];
+  role: Role[];
 
   @Prop({ default: false })
   country: string;

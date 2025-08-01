@@ -10,7 +10,6 @@ import * as bcrypt from 'bcryptjs';
 import { User } from '../user/schemas/user.schema';
 import { RegisterDto } from './dto/register.dto';
 import { LoginDto } from './dto/login.dto';
-import { UserRole } from '../user/schemas/user.schema';
 import to from 'await-to-js';
 import { Role, VALID_ROLES } from '../user/enums/role.enum';
 import { CreateUserDto } from '../user/dto/create-user.dto';
@@ -37,7 +36,7 @@ export class AuthService {
       id: user._id.toString(),
       displayName: user.fullName,
       email: user.email,
-      role: user.role.includes(UserRole.ADMIN) ? UserRole.ADMIN : user.role[0],
+      role: user.role.includes(Role.Admin) ? Role.Admin : user.role[0],
     };
 
     const token = this.createToken(user);

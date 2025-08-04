@@ -15,14 +15,20 @@ async function bootstrap() {
 
   // Swagger setup (optional)
   const config = new DocumentBuilder()
-    .setTitle('FirstFound Platform API')
+    .setTitle('Your API')
     .setDescription('API description')
     .setVersion('1.0')
-    .addBearerAuth()
     .build();
 
   const document = SwaggerModule.createDocument(app, config);
-  SwaggerModule.setup('api', app, document);
+
+  SwaggerModule.setup('api', app, document, {
+    customCssUrl: 'https://unpkg.com/swagger-ui-dist/swagger-ui.css',
+    customJs: [
+      'https://unpkg.com/swagger-ui-dist/swagger-ui-bundle.js',
+      'https://unpkg.com/swagger-ui-dist/swagger-ui-standalone-preset.js',
+    ],
+  });
 
   await app.listen(3000);
 }

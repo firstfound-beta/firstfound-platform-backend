@@ -15,4 +15,7 @@ export class StartupService {
     const startup = new this.startupModel(createStartupDto);
     return startup.save();
   }
+  async getAll() {
+    return this.startupModel.find().exec();
+  }
 }

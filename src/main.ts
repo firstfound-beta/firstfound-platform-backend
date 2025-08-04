@@ -15,7 +15,7 @@ async function bootstrap() {
 
   // Swagger setup (optional)
   const config = new DocumentBuilder()
-    .setTitle('Your API Title')
+    .setTitle('FirstFound Platform API')
     .setDescription('API description')
     .setVersion('1.0')
     .addBearerAuth()

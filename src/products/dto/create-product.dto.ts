@@ -6,8 +6,43 @@ import {
   IsArray,
   IsUrl,
   Min,
+  ValidateNested,
 } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
+import { Type } from 'class-transformer';
+
+export class MilestoneDto {
+  @ApiProperty({ example: 1 })
+  @IsNumber()
+  id: number;
+
+  @ApiProperty({ example: 'Project Planning & Raw Materials' })
+  @IsString()
+  name: string;
+
+  @ApiProperty({ example: 10 })
+  @IsNumber()
+  percentage: number;
+
+  @ApiProperty({
+    example:
+      'Initial planning, design finalization, and procurement of raw materials',
+  })
+  @IsString()
+  description: string;
+
+  @ApiProperty({ example: 'FileText' })
+  @IsString()
+  icon: string;
+
+  @ApiProperty({ example: 7 })
+  @IsNumber()
+  estimatedDays: number;
+
+  @ApiProperty({ example: 'blue' })
+  @IsString()
+  color: string;
+}
 
 export class CreateProductDto {
   @ApiProperty({ example: 'Smart Water Bottle' })
@@ -66,4 +101,25 @@ export class CreateProductDto {
   @IsNumber()
   @Min(0)
   backersCount: number;
+
+  @ApiProperty({
+    type: [MilestoneDto],
+    example: [
+      {
+        id: 1,
+        name: 'Project Planning & Raw Materials',
+        percentage: 10,
+        description:
+          'Initial planning, design finalization, and procurement of raw materials',
+        icon: 'FileText',
+        estimatedDays: 7,
+        color: 'blue',
+      },
+    ],
+  })
+  @IsArray()
+  @ValidateNested({ each: true })
+  @Type(() => MilestoneDto)
+  @IsOptional()
+  milestones?: MilestoneDto[];
 }

@@ -1,6 +1,32 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document } from 'mongoose';
 
+@Schema()
+export class Milestone {
+  @Prop({ required: true })
+  id: number;
+
+  @Prop({ required: true })
+  name: string;
+
+  @Prop({ required: true })
+  percentage: number;
+
+  @Prop({ required: true })
+  description: string;
+
+  @Prop({ required: true })
+  icon: string; // Store icon name as string (e.g., "FileText")
+
+  @Prop({ required: true })
+  estimatedDays: number;
+
+  @Prop({ required: true })
+  color: string;
+}
+
+export const MilestoneSchema = SchemaFactory.createForClass(Milestone);
+
 @Schema({ timestamps: true })
 export class Product {
   @Prop({ required: true })
@@ -35,6 +61,9 @@ export class Product {
 
   @Prop({ required: true })
   backersCount: number;
+
+  @Prop({ type: [MilestoneSchema], default: [] })
+  milestones: Milestone[];
 }
 
 export type ProductDocument = Product & Document;

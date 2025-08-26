@@ -22,5 +22,6 @@
     "forceConsistentCasingInFileNames": false,
     "noFallthroughCasesInSwitch": false
   },
+  
   "include": ["src"] // ✅ Only include src
 }

@@ -27,7 +27,7 @@ export class FeatureProducts {
   @Prop({ required: true })
   companyName: string;
 
-  @Prop({ required: true })
+  @Prop({ required: false })
   registrationNo: string;
 
   @Prop()

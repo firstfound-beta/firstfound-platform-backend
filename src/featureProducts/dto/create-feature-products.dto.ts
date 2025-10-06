@@ -41,7 +41,7 @@ export class CreateFeatureProductsDto {
     description: 'Unique company registration number',
   })
   @IsString()
-  @IsNotEmpty()
+  @IsOptional()
   registrationNo: string;
 
   @ApiProperty({ example: 'https://techify.com', required: false })

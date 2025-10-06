@@ -10,7 +10,9 @@ async function bootstrap() {
       'https://firstfound-platform-frontend.vercel.app',
       'http://localhost:5173',
       'http://localhost:8080',
-      'http://localhost:8081',
+      'https://originn-main-website.vercel.app',
+      'https://originn-startup-main-website.vercel.app',
+      'https://admin-originn.vercel.app',
     ],
     credentials: true,
   });

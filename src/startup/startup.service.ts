@@ -85,4 +85,12 @@ export class StartupService {
 
     return updatedStartup;
   }
+
+  async getById(id: string): Promise<Startup> {
+    const startup = await this.startupModel.findById(id).exec();
+    if (!startup) {
+      throw new BadRequestException('Startup not found');
+    }
+    return startup;
+  }
 }

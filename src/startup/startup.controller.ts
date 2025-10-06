@@ -63,4 +63,15 @@ export class StartupController {
   async login(@Body() loginStartupDto: LoginStartupDto) {
     return this.startupService.login(loginStartupDto);
   }
+
+  @Get(':id')
+  @ApiOperation({ summary: 'Get a startup by ID' })
+  @ApiParam({ name: 'id', description: 'Startup ID to fetch' })
+  async getStartupById(@Param('id') id: string) {
+    const startup = await this.startupService.getById(id);
+    return {
+      message: 'Startup fetched successfully',
+      data: startup,
+    };
+  }
 }

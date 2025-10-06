@@ -21,8 +21,9 @@ export class ProductsService {
   }
 
   // Get all approved products
-  async findAll(): Promise<FeatureProducts[]> {
-    return this.productModel.find({ status: 'approved' }).exec();
+  async findAll(approvedOnly = true): Promise<FeatureProducts[]> {
+    const filter = approvedOnly ? { status: 'approved' } : {};
+    return this.productModel.find(filter).exec();
   }
 
   // Get one product by ID (only if approved)

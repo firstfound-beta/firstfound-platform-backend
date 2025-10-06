@@ -24,8 +24,22 @@ export class ProductsController {
 
   // Get all products - GET /products
   @Get()
-  findAll() {
-    return this.productsService.findAll();
+  async getAllApprovedProducts() {
+    const products = await this.productsService.findAll();
+    return {
+      message: 'Approved products fetched successfully',
+      data: products,
+    };
+  }
+
+  // ✅ New endpoint: Get all products regardless of status
+  @Get('all')
+  async getAllProducts() {
+    const products = await this.productsService.findAll(false); // pass false to fetch all
+    return {
+      message: 'All products fetched successfully',
+      data: products,
+    };
   }
 
   // Get product by ID - GET /products/:id

@@ -5,6 +5,7 @@ import { CreateStartupDto } from './dto/create-startup.dto';
 import { Public } from 'src/user/public.decorator';
 import { ApiBody, ApiOperation, ApiParam } from '@nestjs/swagger';
 import { LoginStartupDto } from './dto/login-startup.dto';
+import { UpdateStatusDto } from './dto/update-status.dto';
 @Controller('startup')
 export class StartupController {
   constructor(private readonly startupService: StartupService) {}
@@ -31,27 +32,11 @@ export class StartupController {
   @Patch(':id/status')
   @ApiOperation({ summary: 'Update startup application status' })
   @ApiParam({ name: 'id', description: 'Startup ID to update' })
-  @ApiBody({
-    schema: {
-      type: 'object',
-      properties: {
-        status: {
-          type: 'string',
-          example: 'approved',
-          enum: ['pending', 'approved', 'rejected'],
-        },
-      },
-    },
-  })
-  async updateStatus(@Param('id') id: string, @Body('status') status: string) {
-    const validStatuses = ['pending', 'approved', 'rejected'];
-    if (!validStatuses.includes(status)) {
-      return { message: 'Invalid status value' };
-    }
-
-    const updated = await this.startupService.updateStatus(id, status);
+  @ApiBody({ type: UpdateStatusDto })
+  async updateStatus(@Param('id') id: string, @Body() body: UpdateStatusDto) {
+    const updated = await this.startupService.updateStatus(id, body.status);
     return {
-      message: `Startup status updated to '${status}' successfully`,
+      message: `Startup status updated to '${body.status}' successfully`,
       data: updated,
     };
   }

@@ -12,7 +12,7 @@ export class Startup {
   @Prop({ required: true })
   aboutStartup: string;
 
-  @Prop({ required: true })
+  @Prop({ required: true, unique: true })
   founderEmail: string;
 
   @Prop({ required: true })

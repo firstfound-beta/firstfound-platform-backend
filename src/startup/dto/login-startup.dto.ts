@@ -1,18 +1,17 @@
-// src/auth/dto/login-startup.dto.ts
 import { ApiProperty } from '@nestjs/swagger';
 import { IsEmail, IsString, MinLength } from 'class-validator';
 
 export class LoginStartupDto {
   @ApiProperty({
+    description: 'Founder’s registered email address',
     example: 'founder@example.com',
-    description: 'Email address of the startup founder',
   })
   @IsEmail()
   founderEmail: string;
 
   @ApiProperty({
+    description: 'Account password',
     example: 'StrongPassword123',
-    description: 'Password used during registration',
   })
   @IsString()
   @MinLength(6)

@@ -1,34 +1,81 @@
-import { IsEmail, IsOptional, IsString } from 'class-validator';
+import { IsEmail, IsOptional, IsString, IsNumber } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 
 export class CreateStartupDto {
-  @ApiProperty({ example: 'GreenTech' })
+  @ApiProperty({ example: 'TechNova Pvt. Ltd.' })
   @IsString()
-  startupName: string;
+  companyName: string;
 
-  @ApiProperty({ example: 'Jane Smith' })
+  @ApiProperty({ example: 'A startup focused on AI-driven educational tools.' })
   @IsString()
-  contactName: string;
+  aboutStartup: string;
 
-  @ApiProperty({ example: 'jane@greentech.com' })
+  @ApiProperty({
+    example: 'founder@technova.com',
+  })
   @IsEmail()
-  email: string;
+  founderEmail: string;
 
-  @ApiProperty({ example: 'Eco-friendly solar panel manufacturing' })
+  @ApiProperty({ example: 'StrongPassword123' })
+  @IsString()
+  password: string;
+
+  @ApiProperty({ example: 'StrongPassword123' })
+  @IsString()
+  confirmPassword: string;
+
+  @ApiProperty({
+    example: 'An AI-based system that personalizes student learning.',
+  })
   @IsString()
   productDescription: string;
 
-  @ApiProperty({ example: 'Energy' })
+  @ApiProperty({ example: 'Rahul Sharma' })
   @IsString()
-  category: string;
+  founderName: string;
 
-  @ApiProperty({ example: 'https://greentech.com', required: false })
+  @ApiProperty({
+    example: '[https://technova.com](https://technova.com)',
+    required: false,
+  })
   @IsOptional()
   @IsString()
-  website?: string;
+  companyWebsite?: string;
 
-  @ApiProperty({ example: 'https://pitchdeck.com/greentech', required: false })
+  @ApiProperty({
+    example: '[https://pitchdeck.com/technova](https://pitchdeck.com/technova)',
+    required: false,
+  })
   @IsOptional()
   @IsString()
   pitchDeckUrl?: string;
+
+  @ApiProperty({ example: 'National Institute of Technology', required: false })
+  @IsOptional()
+  @IsString()
+  InstituteName?: string;
+
+  @ApiProperty({ example: 5, required: false })
+  @IsOptional()
+  @IsNumber()
+  teamMembers?: number;
+
+  @ApiProperty({ example: 'prototype', required: false })
+  @IsOptional()
+  @IsString()
+  stage?: string;
+
+  @ApiProperty({ example: 'Jaipur, Rajasthan', required: false })
+  @IsOptional()
+  @IsString()
+  address?: string;
+
+  @ApiProperty({
+    example: 'pending',
+    description: "Status can be 'pending', 'approved', or 'rejected'",
+    required: false,
+  })
+  @IsOptional()
+  @IsString()
+  status?: string;
 }

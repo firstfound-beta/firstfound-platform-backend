@@ -10,6 +10,7 @@ async function bootstrap() {
       'https://firstfound-platform-frontend.vercel.app',
       'http://localhost:5173',
       'http://localhost:8080',
+      'http://localhost:8081',
     ],
     credentials: true,
   });

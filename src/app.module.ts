@@ -6,8 +6,7 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { UserModule } from './user/user.module';
 import { AuthModule } from './auth/auth.module';
 import { StartupModule } from './startup/startup.module';
-import { ProductsModule } from './products/products.module';
-import { StripeModule } from './stripe/stripe.module';
+import { ProductsModule } from './featureProducts/featureProducts.module';
 @Module({
   imports: [
     ConfigModule.forRoot({ isGlobal: true }),
@@ -22,7 +21,6 @@ import { StripeModule } from './stripe/stripe.module';
     AuthModule,
     StartupModule,
     ProductsModule,
-    StripeModule,
   ],
   controllers: [AppController],
   providers: [AppService],

@@ -63,6 +63,9 @@ export class FeatureProducts {
   @Prop({ type: [MemberSchema], default: [] })
   team: Member[];
 
+  @Prop()
+  targetMarket: string;
+
   @Prop({ default: 'pending' }) // could be 'pending', 'approved', 'rejected'
   status: string;
 }

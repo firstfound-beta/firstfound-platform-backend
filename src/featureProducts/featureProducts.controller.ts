@@ -89,4 +89,15 @@ export class ProductsController {
       data: updatedProduct,
     };
   }
+
+  @Get('admin/:id')
+  @ApiOperation({ summary: 'Get a product by ID (all statuses)' })
+  @ApiParam({ name: 'id', description: 'Product ID to fetch' })
+  async getProductByIdWithoutApproval(@Param('id') id: string) {
+    const product = await this.productsService.findOneWithoutApproval(id);
+    return {
+      message: 'Product fetched successfully',
+      data: product,
+    };
+  }
 }

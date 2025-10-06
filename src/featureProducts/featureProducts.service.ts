@@ -72,4 +72,12 @@ export class ProductsService {
     }
     return updatedProduct;
   }
+  // Get a product by ID without filtering by approval
+  async findOneWithoutApproval(id: string): Promise<FeatureProducts> {
+    const product = await this.productModel.findById(id).exec();
+    if (!product) {
+      throw new NotFoundException(`Product with ID ${id} not found`);
+    }
+    return product;
+  }
 }

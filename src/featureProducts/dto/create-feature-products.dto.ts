@@ -29,6 +29,17 @@ export class MemberDto {
   @IsString()
   photo?: string | null;
 }
+export class InstituteDto {
+  @ApiProperty({ example: 'IIT Bombay' })
+  @IsString()
+  @IsNotEmpty()
+  name: string;
+
+  @ApiProperty({ example: 'Leading institute for innovation and research' })
+  @IsString()
+  @IsNotEmpty()
+  description: string;
+}
 
 export class CreateFeatureProductsDto {
   @ApiProperty({ example: 'Techify Pvt Ltd' })
@@ -123,4 +134,9 @@ export class CreateFeatureProductsDto {
   @ValidateNested({ each: true })
   @Type(() => MemberDto)
   team: MemberDto[];
+
+  @ApiProperty({ type: InstituteDto })
+  @ValidateNested()
+  @Type(() => InstituteDto)
+  institute: InstituteDto;
 }

@@ -18,7 +18,14 @@ export class Member {
 }
 
 const MemberSchema = SchemaFactory.createForClass(Member);
+export class Institute {
+  @Prop({ required: true })
+  name: string;
 
+  @Prop({ required: true })
+  description: string;
+}
+const InstituteSchema = SchemaFactory.createForClass(Institute);
 // --- Main FeatureProducts Schema ---
 export type FeatureProductsDocument = FeatureProducts & Document;
 
@@ -68,6 +75,9 @@ export class FeatureProducts {
 
   @Prop({ default: 'pending' }) // could be 'pending', 'approved', 'rejected'
   status: string;
+
+  @Prop({ type: InstituteSchema, default: {} })
+  institute: Institute;
 }
 
 export const FeatureProductsSchema =

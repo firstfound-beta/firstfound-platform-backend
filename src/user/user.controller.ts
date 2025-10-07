@@ -16,9 +16,6 @@ import { UserService } from './user.service';
 import { AuthGuard } from '@nestjs/passport';
 import { Response } from 'express';
 import { User } from './schemas/user.schema';
-import { Role } from './enums/role.enum';
-import { Roles } from './roles.decorator';
-import { RolesGuard } from './roles.guard';
 import { JwtAuthGuard } from './jwt-auth.guard';
 
 @Controller('user')
@@ -26,8 +23,6 @@ export class UserController {
   constructor(private readonly userService: UserService) {}
 
   @Post()
-  @Roles(Role.Admin)
-  @UseGuards(AuthGuard('jwt'), RolesGuard)
   async createUser(@Body() createUserDto: Partial<User>, @Res() res: Response) {
     try {
       const user = await this.userService.createUser(createUserDto);
@@ -41,8 +36,6 @@ export class UserController {
     }
   }
   @Put(':id')
-  @Roles(Role.Admin)
-  @UseGuards(AuthGuard('jwt'), RolesGuard)
   async updateUser(
     @Param('id') id: string,
     @Body() updateUserDto: Partial<User>,

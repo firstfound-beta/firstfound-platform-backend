@@ -28,7 +28,6 @@ export class UserService {
       this.handleDatabaseError(err, 'Failed to create user');
     }
     this.logger.log(`User created with ID: ${savedUser._id}`);
-    const name = `${user.firstName} ${user.lastName}`;
     return savedUser!;
   }
   async updateUser(id: string, updates: Partial<User>): Promise<User> {

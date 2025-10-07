@@ -21,10 +21,7 @@ export class AuthController {
   async register(@Body() registerDto: RegisterDto, @Res() res: Response) {
     try {
       console.log(registerDto);
-      const user = await this.authService.register({
-        ...registerDto,
-        role: registerDto.role,
-      });
+      const user = await this.authService.register(registerDto);
       console.log(user);
       return res.status(HttpStatus.CREATED).json({
         message: 'User registered successfully',

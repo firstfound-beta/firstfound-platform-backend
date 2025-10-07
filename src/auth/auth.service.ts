@@ -11,7 +11,6 @@ import { User } from '../user/schemas/user.schema';
 import { RegisterDto } from './dto/register.dto';
 import { LoginDto } from './dto/login.dto';
 import to from 'await-to-js';
-import { Role, VALID_ROLES } from '../user/enums/role.enum';
 import { CreateUserDto } from '../user/dto/create-user.dto';
 @Injectable()
 export class AuthService {
@@ -36,7 +35,6 @@ export class AuthService {
       id: user._id.toString(),
       displayName: user.fullName,
       email: user.email,
-      role: user.role.includes(Role.Admin) ? Role.Admin : user.role[0],
     };
 
     const token = this.createToken(user);
@@ -47,7 +45,6 @@ export class AuthService {
   private createToken(user: User) {
     const payload = {
       id: user._id,
-      role: user.role,
       email: user.email,
     };
 
@@ -58,20 +55,7 @@ export class AuthService {
   }
 
   async register(createUserDto: CreateUserDto) {
-    const { firstName, lastName, email, password, role } = createUserDto;
-    console.log('Incoming role value:', role);
-    console.log('Type of role:', typeof role);
-
-    if (!Array.isArray(role) || role.length === 0) {
-      throw new ForbiddenException('Role must be a non-empty array');
-    }
-
-    const invalidRoles = role.filter((r) => !VALID_ROLES.includes(r));
-    if (invalidRoles.length > 0) {
-      throw new ForbiddenException(
-        `Invalid role(s): ${invalidRoles.join(', ')}. Must be one of: ${VALID_ROLES.join(', ')}`,
-      );
-    }
+    const { fullName, email, password, confirmPassword } = createUserDto;
 
     // Check if the user already exists
     const [existingUserErr, existingUser] = await to(
@@ -82,11 +66,10 @@ export class AuthService {
     }
 
     const userData: any = {
-      firstName,
-      lastName,
+      fullName,
       email,
       password,
-      role: role,
+      confirmPassword,
     };
 
     userData.password = password; // Let the pre-save hook handle hashing

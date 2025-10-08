@@ -93,4 +93,10 @@ export class StartupService {
     }
     return startup;
   }
+  async delete(id: string): Promise<void> {
+    const result = await this.startupModel.findByIdAndDelete(id).exec();
+    if (!result) {
+      throw new BadRequestException('Startup not found');
+    }
+  }
 }

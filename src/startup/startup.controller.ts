@@ -1,5 +1,13 @@
 // src/startup/startup.controller.ts
-import { Body, Controller, Get, Param, Patch, Post } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Patch,
+  Post,
+} from '@nestjs/common';
 import { StartupService } from './startup.service';
 import { CreateStartupDto } from './dto/create-startup.dto';
 import { Public } from 'src/user/public.decorator';
@@ -57,6 +65,16 @@ export class StartupController {
     return {
       message: 'Startup fetched successfully',
       data: startup,
+    };
+  }
+
+  @Delete(':id')
+  @ApiOperation({ summary: 'Delete a startup application by ID' })
+  @ApiParam({ name: 'id', description: 'Startup ID to delete' })
+  async deleteStartup(@Param('id') id: string) {
+    await this.startupService.delete(id);
+    return {
+      message: 'Startup application deleted successfully',
     };
   }
 }

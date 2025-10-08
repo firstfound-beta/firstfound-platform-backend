@@ -78,6 +78,12 @@ export class FeatureProducts {
 
   @Prop({ type: InstituteSchema, default: {} })
   institute: Institute;
+
+  @Prop()
+  stageDescription?: string;
+
+  @Prop()
+  stage?: string;
 }
 
 export const FeatureProductsSchema =

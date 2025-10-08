@@ -139,4 +139,14 @@ export class CreateFeatureProductsDto {
   @ValidateNested()
   @Type(() => InstituteDto)
   institute: InstituteDto;
+
+  @ApiProperty({ example: 'Seed', required: false })
+  @IsOptional()
+  @IsString()
+  stageDescription?: string;
+
+  @ApiProperty({ example: 'seed', required: false })
+  @IsOptional()
+  @IsString()
+  stage?: string;
 }

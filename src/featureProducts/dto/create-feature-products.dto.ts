@@ -149,4 +149,9 @@ export class CreateFeatureProductsDto {
   @IsOptional()
   @IsString()
   stage?: string;
+
+  @ApiProperty({ example: 'This is a short description', required: false })
+  @IsOptional()
+  @IsString()
+  shortDescription?: string;
 }

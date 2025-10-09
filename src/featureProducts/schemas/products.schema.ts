@@ -84,6 +84,9 @@ export class FeatureProducts {
 
   @Prop()
   stage?: string;
+
+  @Prop()
+  shortDescription?: string;
 }
 
 export const FeatureProductsSchema =

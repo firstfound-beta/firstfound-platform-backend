@@ -154,4 +154,9 @@ export class CreateFeatureProductsDto {
   @IsOptional()
   @IsString()
   shortDescription?: string;
+
+  @ApiProperty({ example: 'Our target market is small businesses.' })
+  @IsString()
+  @IsNotEmpty()
+  productDescription: string;
 }

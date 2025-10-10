@@ -76,6 +76,9 @@ export class FeatureProducts {
   @Prop()
   targetMarket: string;
 
+  @Prop()
+  productDescription: string;
+
   @Prop({ default: 'pending' })
   status: string;
 

@@ -1,7 +1,7 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document } from 'mongoose';
 
-// --- Member Subdocument Schema ---
+// --- Member Subdocument ---
 @Schema({ _id: false })
 export class Member {
   @Prop({ required: true })
@@ -16,8 +16,10 @@ export class Member {
   @Prop({ default: null })
   photo: string | null;
 }
-
 const MemberSchema = SchemaFactory.createForClass(Member);
+
+// --- Institute Subdocument ---
+@Schema({ _id: false }) // ⬅️ ensure no _id and Mongoose treats it as pure embedded doc
 export class Institute {
   @Prop({ required: true })
   name: string;
@@ -26,6 +28,7 @@ export class Institute {
   description: string;
 }
 const InstituteSchema = SchemaFactory.createForClass(Institute);
+
 // --- Main FeatureProducts Schema ---
 export type FeatureProductsDocument = FeatureProducts & Document;
 
@@ -34,7 +37,7 @@ export class FeatureProducts {
   @Prop({ required: true })
   companyName: string;
 
-  @Prop({ required: false })
+  @Prop()
   registrationNo: string;
 
   @Prop()
@@ -73,10 +76,11 @@ export class FeatureProducts {
   @Prop()
   targetMarket: string;
 
-  @Prop({ default: 'pending' }) // could be 'pending', 'approved', 'rejected'
+  @Prop({ default: 'pending' })
   status: string;
 
-  @Prop({ type: InstituteSchema, default: {} })
+  // ✅ Fixed institute schema embedding
+  @Prop({ type: InstituteSchema, required: true })
   institute: Institute;
 
   @Prop()

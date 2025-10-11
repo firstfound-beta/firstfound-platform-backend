@@ -100,4 +100,18 @@ export class ProductsController {
       data: product,
     };
   }
+
+  @Get('startup/:startupId')
+  @ApiOperation({ summary: 'Get products by Startup ID' })
+  @ApiParam({
+    name: 'startupId',
+    description: 'Startup ID to fetch products for',
+  })
+  async getProductsByStartupId(@Param('startupId') startupId: string) {
+    const products = await this.productsService.findByStartupId(startupId);
+    return {
+      message: `Products for Startup ID ${startupId} fetched successfully`,
+      data: products,
+    };
+  }
 }

@@ -80,4 +80,8 @@ export class ProductsService {
     }
     return product;
   }
+
+  async findByStartupId(startupId: string): Promise<FeatureProducts[]> {
+    return this.productModel.find({ startupId, status: 'approved' }).exec();
+  }
 }

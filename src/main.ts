@@ -13,6 +13,7 @@ async function bootstrap() {
       'https://originn-main-website.vercel.app',
       'https://originn-startup-main-website.vercel.app',
       'https://admin-originn.vercel.app',
+      'https://www.originn.co.in',
     ],
     credentials: true,
   });

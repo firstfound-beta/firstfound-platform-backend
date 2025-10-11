@@ -28,6 +28,11 @@ export class MemberDto {
   @IsOptional()
   @IsString()
   photo?: string | null;
+
+  @ApiProperty({ example: 'This is a short description', required: false })
+  @IsOptional()
+  @IsString()
+  shortDescription?: string;
 }
 export class InstituteDto {
   @ApiProperty({ example: 'IIT Bombay' })

@@ -8,6 +8,8 @@ import { AuthModule } from './auth/auth.module';
 import { StartupModule } from './startup/startup.module';
 import { ProductsModule } from './featureProducts/featureProducts.module';
 import { CampaignBuilderModule } from './campaign-builder/campaign-builder.module';
+import { EventEmitterModule } from '@nestjs/event-emitter';
+import { EmailModule } from './email/email.module';
 @Module({
   imports: [
     ConfigModule.forRoot({ isGlobal: true }),
@@ -18,6 +20,8 @@ import { CampaignBuilderModule } from './campaign-builder/campaign-builder.modul
       }),
       inject: [ConfigService],
     }),
+    EventEmitterModule.forRoot(),
+    EmailModule,
     UserModule,
     AuthModule,
     StartupModule,

@@ -5,27 +5,63 @@ import { Model } from 'mongoose';
 import { Startup, StartupDocument } from './schemas/startup.schema';
 import { CreateStartupDto } from './dto/create-startup.dto';
 import { JwtService } from '@nestjs/jwt';
-import { UnauthorizedException, BadRequestException } from '@nestjs/common';
+import {
+  UnauthorizedException,
+  BadRequestException,
+  InternalServerErrorException,
+} from '@nestjs/common';
 import { LoginStartupDto } from './dto/login-startup.dto';
 import * as bcrypt from 'bcryptjs';
+import { EventEmitter2 } from '@nestjs/event-emitter';
 @Injectable()
 export class StartupService {
   constructor(
     @InjectModel(Startup.name) private startupModel: Model<StartupDocument>,
     private jwtService: JwtService,
+    private readonly eventEmitter: EventEmitter2,
   ) {}
 
   async apply(createStartupDto: CreateStartupDto): Promise<Startup> {
-    // Hash the password before saving
-    const hashedPassword = await bcrypt.hash(createStartupDto.password, 10);
+    try {
+      // ✅ Check if email already exists
+      const existingStartup = await this.startupModel.findOne({
+        founderEmail: createStartupDto.founderEmail,
+      });
 
-    const startup = new this.startupModel({
-      ...createStartupDto,
-      password: hashedPassword,
-      confirmPassword: hashedPassword, // optional, for consistency
-    });
+      if (existingStartup) {
+        throw new BadRequestException(
+          'A startup with this founder email already exists. Please log in or use a different email.',
+        );
+      }
 
-    return startup.save();
+      // ✅ Hash password before saving
+      const hashedPassword = await bcrypt.hash(createStartupDto.password, 10);
+
+      const startup = new this.startupModel({
+        ...createStartupDto,
+        password: hashedPassword,
+        confirmPassword: hashedPassword,
+      });
+
+      // ✅ Emit “application received” email event
+      this.eventEmitter.emit('user.application.received', {
+        email: createStartupDto.founderEmail,
+        name: createStartupDto.companyName,
+      });
+
+      return await startup.save();
+    } catch (error) {
+      // ✅ Handle MongoDB duplicate key error just in case
+      if (error.code === 11000 && error.keyPattern?.founderEmail) {
+        throw new BadRequestException(
+          'A startup with this founder email already exists. Please log in or use a different email.',
+        );
+      }
+
+      throw new InternalServerErrorException(
+        'Something went wrong while submitting the application.',
+      );
+    }
   }
 
   async login(loginStartupDto: LoginStartupDto) {
@@ -81,6 +117,19 @@ export class StartupService {
 
     if (!updatedStartup) {
       throw new Error('Startup not found');
+    }
+
+    // ✅ Emit email event only when approved
+    if (status === 'approved') {
+      this.eventEmitter.emit('user.application.approved', {
+        email: updatedStartup.founderEmail,
+        name: updatedStartup.companyName,
+      });
+    } else if (status === 'rejected') {
+      this.eventEmitter.emit('user.application.rejected', {
+        email: updatedStartup.founderEmail,
+        name: updatedStartup.companyName,
+      });
     }
 
     return updatedStartup;

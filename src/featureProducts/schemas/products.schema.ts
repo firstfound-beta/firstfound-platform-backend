@@ -15,6 +15,9 @@ export class Member {
 
   @Prop({ default: null })
   photo: string | null;
+
+  @Prop()
+  shortDescription?: string;
 }
 const MemberSchema = SchemaFactory.createForClass(Member);
 

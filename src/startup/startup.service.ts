@@ -4,6 +4,7 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { Startup, StartupDocument } from './schemas/startup.schema';
 import { CreateStartupDto } from './dto/create-startup.dto';
+import { UpdateStartupDto } from './dto/update-startup.dto';
 import { JwtService } from '@nestjs/jwt';
 import {
   UnauthorizedException,
@@ -13,6 +14,7 @@ import {
 import { LoginStartupDto } from './dto/login-startup.dto';
 import * as bcrypt from 'bcryptjs';
 import { EventEmitter2 } from '@nestjs/event-emitter';
+import { isValidObjectId } from 'mongoose';
 @Injectable()
 export class StartupService {
   constructor(
@@ -147,5 +149,26 @@ export class StartupService {
     if (!result) {
       throw new BadRequestException('Startup not found');
     }
+  }
+
+  async update(
+    id: string,
+    updateStartupDto: UpdateStartupDto,
+  ): Promise<Startup> {
+    if (!isValidObjectId(id)) {
+      throw new BadRequestException('Invalid ID format');
+    }
+
+    const updatedStartup = await this.startupModel.findByIdAndUpdate(
+      id,
+      updateStartupDto,
+      { new: true },
+    );
+
+    if (!updatedStartup) {
+      throw new BadRequestException('Startup not found');
+    }
+
+    return updatedStartup;
   }
 }

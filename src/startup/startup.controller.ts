@@ -7,6 +7,7 @@ import {
   Param,
   Patch,
   Post,
+  Put,
 } from '@nestjs/common';
 import { StartupService } from './startup.service';
 import { CreateStartupDto } from './dto/create-startup.dto';
@@ -75,6 +76,21 @@ export class StartupController {
     await this.startupService.delete(id);
     return {
       message: 'Startup application deleted successfully',
+    };
+  }
+
+  @Put(':id')
+  @ApiOperation({ summary: 'Update a startup application by ID' })
+  @ApiParam({ name: 'id', description: 'Startup ID to update' })
+  @ApiBody({ type: CreateStartupDto })
+  async updateStartup(
+    @Param('id') id: string,
+    @Body() updateStartupDto: CreateStartupDto,
+  ) {
+    const updated = await this.startupService.update(id, updateStartupDto);
+    return {
+      message: 'Startup application updated successfully',
+      data: updated,
     };
   }
 }

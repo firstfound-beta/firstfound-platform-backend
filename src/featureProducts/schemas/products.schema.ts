@@ -1,5 +1,5 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { Document } from 'mongoose';
+import { Document, Types } from 'mongoose';
 
 // --- Member Subdocument ---
 @Schema({ _id: false })
@@ -97,6 +97,9 @@ export class FeatureProducts {
 
   @Prop()
   shortDescription?: string;
+
+  @Prop({ type: Types.ObjectId, ref: 'Startup', required: true })
+  startUpId: Types.ObjectId;
 }
 
 export const FeatureProductsSchema =

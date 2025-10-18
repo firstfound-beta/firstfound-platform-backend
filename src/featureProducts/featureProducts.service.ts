@@ -4,7 +4,8 @@ import { Model } from 'mongoose';
 import { CreateFeatureProductsDto } from './dto/create-feature-products.dto';
 import { UpdateFeatureProductsDto } from './dto/update-feature-product.dto';
 import { FeatureProducts } from './schemas/products.schema';
-
+import { Types } from 'mongoose';
+import { BadRequestException } from '@nestjs/common';
 @Injectable()
 export class ProductsService {
   constructor(
@@ -16,7 +17,10 @@ export class ProductsService {
   async create(
     createProductDto: CreateFeatureProductsDto,
   ): Promise<FeatureProducts> {
-    const product = new this.productModel(createProductDto);
+    const product = new this.productModel({
+      ...createProductDto,
+      startUpId: new Types.ObjectId(createProductDto.startUpId),
+    });
     return product.save();
   }
 
@@ -81,7 +85,13 @@ export class ProductsService {
     return product;
   }
 
-  async findByStartupId(startupId: string): Promise<FeatureProducts[]> {
-    return this.productModel.find({ startupId, status: 'approved' }).exec();
+  async findByStartupId(startUpId: string): Promise<FeatureProducts[]> {
+    if (!Types.ObjectId.isValid(startUpId)) {
+      throw new BadRequestException('Invalid startupId');
+    }
+
+    return this.productModel
+      .find({ startUpId: new Types.ObjectId(startUpId), status: 'approved' })
+      .exec();
   }
 }

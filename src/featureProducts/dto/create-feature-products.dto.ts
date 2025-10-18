@@ -5,6 +5,7 @@ import {
   IsOptional,
   IsString,
   ValidateNested,
+  IsMongoId,
 } from 'class-validator';
 import { Type } from 'class-transformer';
 
@@ -164,4 +165,12 @@ export class CreateFeatureProductsDto {
   @IsString()
   @IsNotEmpty()
   productDescription: string;
+
+  @ApiProperty({
+    example: '671fc12e4d3a54c0b7a1df5b',
+    description: 'MongoDB ObjectId of the startup that owns this product',
+  })
+  @IsMongoId()
+  @IsNotEmpty()
+  startUpId: string;
 }

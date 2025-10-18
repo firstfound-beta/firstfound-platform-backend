@@ -18,19 +18,28 @@ export class AuthService {
     @InjectModel(User.name) private userModel: Model<User>,
     private jwtService: JwtService,
   ) {}
-
+  private createToken(user: User) {
+    const payload = {
+      email: user.email,
+      fullName: user.fullName,
+    };
+    return this.jwtService.sign(payload);
+  }
   async login(email: string, password: string) {
     const [userErr, user] = await to(
       this.userModel.findOne({ email }).lean().exec(),
     );
 
+    if (userErr) throw new Error('Database error occurred');
+    if (!user) throw new UnauthorizedException('User not found');
+
     const [isMatchErr, isMatch] = await to(
       bcrypt.compare(password, user.password),
     );
 
-    if (isMatchErr || !isMatch)
-      throw new UnauthorizedException('Invalid password');
-    console.log(user);
+    if (isMatchErr) throw new Error('Error comparing passwords');
+    if (!isMatch) throw new UnauthorizedException('Invalid password');
+
     const userData = {
       id: user._id.toString(),
       displayName: user.fullName,
@@ -38,20 +47,7 @@ export class AuthService {
     };
 
     const token = this.createToken(user);
-
     return { token, user: userData };
-  }
-
-  private createToken(user: User) {
-    const payload = {
-      id: user._id,
-      email: user.email,
-    };
-
-    return this.jwtService.sign(payload, {
-      secret: process.env.JWT_SECRET,
-      expiresIn: process.env.EXPIRES_IN || '24h',
-    });
   }
 
   async register(createUserDto: CreateUserDto) {
